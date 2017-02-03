@@ -82,6 +82,10 @@ Examples:
 npm-module-stats's version changed to v0.0.7
 
 Published module: + npm-module-stats@0.0.7
+
+webpack-glob-folder-entries's version changed to v1.0.1
+
+Published module: + webpack-glob-folder-entries@1.0.1
 ```
 
 ### Author

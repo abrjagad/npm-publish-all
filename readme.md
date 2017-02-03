@@ -83,3 +83,7 @@ npm-module-stats's version changed to v0.0.7
 
 Published module: + npm-module-stats@0.0.7
 ```
+
+### Author
+
+Abraham Jagadeesh

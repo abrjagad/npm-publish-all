@@ -1,0 +1,37 @@
+{
+  "name": "npm-publish-all",
+  "version": "0.0.1",
+  "main": "index.js",
+  "description": "Bump the version and publish all the modules inside any folder",
+  "bin": {
+    "npm-publish-all": "./bin/cmd.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "npm",
+    "publish",
+    "recursive",
+    "multiple"
+  ],
+  "author": "Abraham Jagadeesh <abraham.webdeveloper@gmail.com>",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/abrahamjagadeesh/npm-publish-all/blob/master/LICENSE"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/abrahamjagadeesh/npm-publish-all/issues"
+  },
+  "homepage": "https://github.com/abrahamjagadeesh/npm-publish-all.git#readme",
+  "dependencies": {
+    "fs-extra": "^2.0.0",
+    "yargs": "^6.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abrahamjagadeesh/npm-publish-all.git"
+  }
+}

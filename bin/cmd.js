@@ -5,17 +5,18 @@
 var argv = require('yargs')
   .usage('Usage: npm-publish-all bump --bumpType [string]')
   .example('npm-publish-all bump', 'Only Bump version  \n')
-  .example('npm-publish-all bump --bumpType major', 'Bump version to major \n')
-  .example('npm-publish-all bump --bumpType 2.0.0', 'Bump version to a number \n')
-  .example('npm-publish-all bump --exclude bin', 'excludes any folders like node_modules \n')
+  .example('npm-publish-all bump --bumpType=major', 'Bump version to major \n')
+  .example('npm-publish-all bump --bumpType=2.0.0', 'Bump version to a number \n')
+  .example('npm-publish-all bump --exclude=bin cmd', 'excludes any folders like node_modules \n')
+  .example('npm-publish-all bump --include=glob react webpack', 'includes only these folder \n')
   .example('npm-publish-all bump --versionArgs="--force"', 'any options that the npm version command takes \n')
-  .example('npm-publish-all bump --context subDirectory', 'when you want to run the commands in a sub directory \n')
+  .example('npm-publish-all bump --context=subDirectory', 'when you want to run the commands in a sub directory \n')
   .example('npm-publish-all publish', 'Only publish the module \n')
-  .example('npm-publish-all publish --exclude bin \n')
+  .example('npm-publish-all publish --exclude=bin cmd\n')
   .example('npm-publish-all publish --publishArgs="--tag alpha"', 'any options that the npm publish command takes \n')
-  .example('npm-publish-all publish --context subDirectory --exclude bin \n')
+  .example('npm-publish-all publish --context=subDirectory --exclude=bin \n')
   .example('npm-publish-all both', 'Bump the version and publish as well \n')
-  .example('npm-publish-all both --context subDirectory --exclude bin \n')
+  .example('npm-publish-all both --context subDirectory --exclude=bin \n')
   .options({
     'bumpType': {
       default: 'patch',
@@ -25,6 +26,11 @@ var argv = require('yargs')
     'exclude': {
       default: [],
       describe: 'List of modules to exclude, leave space between inputs',
+      type: 'array'
+    },
+    'include': {
+      default: [],
+      describe: 'List of modules to include, leave space between inputs',
       type: 'array'
     },
     'context': {
@@ -43,6 +49,7 @@ var argv = require('yargs')
     }
   })
   .global('exclude')
+  .global('include')
   .global('context')
   .global('bumpType')
   .global('versionArgs')
@@ -66,6 +73,7 @@ let command = argv._.pop();
 
 // exclude directories
 let exclude = ['node_modules'].concat(argv.exclude);
+let include = argv.include;
 
 // change the context to a sub directory
 if (argv.context) {
@@ -101,8 +109,9 @@ function Walk() {
           return;
         }
 
-        //if, a directory and not excluded
-        if (stats.isDirectory() && !exclude.includes(file)) {
+
+        //if, a directory is and included or not excluded
+        if (stats.isDirectory() && ((include.length && include.indexOf(file)>=0)||(!include.length && exclude.indexOf(file)<0) )) {  
 
           let pathToDir = path.join(dir, file);
           let isModule = fs.existsSync(path.join(pathToDir, 'package.json'));

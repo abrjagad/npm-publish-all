@@ -47,32 +47,34 @@ Options:
 Examples:
   npm-publish-all bump                           Only Bump version
 
-  npm-publish-all bump --bumpType major          Bump version to major
+  npm-publish-all bump --bumpType=major          Bump version to major
 
-  npm-publish-all bump --bumpType 2.0.0          Bump version to a number
+  npm-publish-all bump --bumpType=2.0.0          Bump version to a number
 
-  npm-publish-all bump --exclude bin             excludes any folders like node_modules
+  npm-publish-all bump --exclude=bin cmd         excludes any folders like node_modules
+
+  npm-publish-all bump --include=glob react      includes only these folder
 
   npm-publish-all bump --versionArgs="--force"   any options that the npm version
                                                  command takes
 
-  npm-publish-all bump --context subDirectory    when you want to run the commands in a
+  npm-publish-all bump --context=subDirectory    when you want to run the commands in a
                                                  sub directory
 
   npm-publish-all publish                        Only publish the module
 
-  npm-publish-all publish --exclude bin
+  npm-publish-all publish --exclude=bin cmd
 
   npm-publish-all publish --publishArgs="--tag   any options that the npm publish
   alpha"                                         command takes
 
-  npm-publish-all publish --context
-  subDirectory --exclude bin
+  npm-publish-all publish
+  --context=subDirectory --exclude=bin
 
   npm-publish-all both                           Bump the version and publish as well
 
   npm-publish-all both --context subDirectory
-  --exclude bin
+  --exclude=bin
 
 ```
 

@@ -91,8 +91,12 @@ function Walk() {
 
   //current working directory
   //context might have changed
-  let dir = process.cwd();
+  let currentDir = process.cwd();
 
+  processDir(currentDir);
+
+  function processDir(dir) {
+  // console.log("processing dir: " + dir);
   fs.readdir(dir, function (err, files) {
 
     if (err) {
@@ -101,7 +105,7 @@ function Walk() {
     }
 
     files.map(function (file) {
-
+      // console.log("Reading stat for file: " + file);
       fs.stat(file, function (e, stats) {
 
         if (e) {
@@ -111,13 +115,15 @@ function Walk() {
 
 
         //if, a directory is and included or not excluded
-        if (stats.isDirectory() && ((include.length && include.indexOf(file)>=0)||(!include.length && exclude.indexOf(file)<0) )) {  
+        if (stats.isDirectory() && ((include.length && include.indexOf(file)>=0)||(!include.length && exclude.indexOf(file)<0) )) {
 
           let pathToDir = path.join(dir, file);
           let isModule = fs.existsSync(path.join(pathToDir, 'package.json'));
 
           if (!isModule) {
-            console.warn("Folder ", file, "/ is not a Node module");
+            console.warn("Folder " + file + "/ is not a Node module, trying jump in");
+            process.chdir(pathToDir);
+            processDir(pathToDir);
             return;
           }
 
@@ -154,4 +160,4 @@ function Walk() {
     });
   });
 }
-
+}

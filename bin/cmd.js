@@ -91,8 +91,12 @@ function Walk() {
 
   //current working directory
   //context might have changed
-  let dir = process.cwd();
+  let currentDir = process.cwd();
 
+  processDir(currentDir);
+
+  function processDir(dir) {
+  // console.log("processing dir: " + dir);
   fs.readdir(dir, function (err, files) {
 
     if (err) {
@@ -101,8 +105,9 @@ function Walk() {
     }
 
     files.map(function (file) {
-
-      fs.stat(file, function (e, stats) {
+      // console.log("Reading stat for file: " + file);
+      let fullFilePath = path.join(dir, file);
+      fs.stat(fullFilePath, function (e, stats) {
 
         if (e) {
           console.error("Error in reading stats", e);
@@ -111,13 +116,15 @@ function Walk() {
 
 
         //if, a directory is and included or not excluded
-        if (stats.isDirectory() && ((include.length && include.indexOf(file)>=0)||(!include.length && exclude.indexOf(file)<0) )) {  
+        if (stats.isDirectory() && ((include.length && include.indexOf(file)>=0)||(!include.length && exclude.indexOf(file)<0) )) {
 
-          let pathToDir = path.join(dir, file);
+          let pathToDir = fullFilePath;
           let isModule = fs.existsSync(path.join(pathToDir, 'package.json'));
 
           if (!isModule) {
-            console.warn("Folder ", file, "/ is not a Node module");
+            console.warn("Folder " + file + "/ is not a Node module, trying jump in");
+            // process.chdir(pathToDir);
+            processDir(pathToDir);
             return;
           }
 
@@ -125,6 +132,7 @@ function Walk() {
            * @param pathToDir {string} publish the module in this path
            */
           function _publishModule(pathToDir) {
+            //console.log("Publishing " + pathToDir);
             publish(pathToDir, argv.publishArgs).then((data) => {
               console.log(`Published module: ${data.stdout}`);
             }).catch((err) => {
@@ -154,4 +162,4 @@ function Walk() {
     });
   });
 }
-
+}
